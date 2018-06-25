@@ -3,12 +3,6 @@
     "description": "project",
     "type": "mine",
     "license": "GLP",
-    "authors": [
-        {
-            "name": "joversky",
-            "email": "joversky@yahoo.fr"
-        }
-    ],
     "minimum-stability": "stable",
     "require": {},
 	"require-dev":{
