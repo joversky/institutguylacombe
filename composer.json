@@ -1,11 +1,3 @@
 {
-    "name": "project/project",
-    "description": "project",
-    "type": "mine",
-    "license": "GLP",
-    "minimum-stability": "stable",
-    "require": {},
-	"require-dev":{
-	"heroku/heroku-buildpack-php":"*"
-}
+
 }
