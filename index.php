@@ -1,3 +1,60 @@
+<?php
+// Message Vars
+$msg = '';
+$msgClass = '';
+// Check For Submit
+if(filter_has_var(INPUT_POST, 'submit')){
+	//Get Form Data
+	$name =htmlspecialchars($_POST['name']);
+	$email =htmlspecialchars($_POST['email']);
+	$telephone =htmlspecialchars($_POST['telephone']);
+	$message =htmlspecialchars($_POST['message']);
+	
+	// Check Required Fields
+	if(!empty($email) && !empty($name) && !empty($telephone) && !empty($message)){
+		//Passed
+		// Check Email
+		if(filter_var($email, FILTER_VALIDATE_EMAIL) === false){
+			//Failed
+	
+		$msg = 'Veuillez entrer un valid email';
+		$msgClass = 'alert-danger';
+		} else{
+			//Passed
+	        // Recipient Email
+			$toEmail = 'joversky@gmail.com';
+			$subject = 'Contact Request From'.$name;
+			$body = '<h2>Contact Request</h2>
+				<h4>Name</h4><p>'.$name.'</p>
+				<h4>Email</h4><p>'.$email.'</p>
+				<h4>Telephone</h4><p>'.$telephone.'</p>
+				<h4>Message</h4><p>'.$message.'</p>
+				';
+			//Email Headers
+			$headers = "MIME-Version: 1.0" ."\r\n";
+			$headers .="Content-Type:text/html;charset=UTF-8" . "\r\n";
+			
+			// Additional Headers
+			$headers .= "From: " .$name. "<".$email.">". "\r\n";
+			if(mail($toEmail, $subject, $body, $headers)){
+				//Email Sent
+		    $msg = 'Votre message a été envoyé avec succes';
+		    $msgClass = 'alert-success';
+			}else{
+				$msg = 'On ne peut pas envoyer ton message';
+		        $msgClass = 'alert-danger';
+			}
+		/*$msg = 'Votre message a été envoyé avec succes';
+		$msgClass = 'alert-success';*/
+		}
+	}else{
+		//Failed
+	
+		$msg = 'Tous les champs sont obligatoires';
+		$msgClass = 'alert-danger';
+	}
+}
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -284,34 +341,45 @@ et Ste-Jeanne-d’Arc après leur journée d’école.</p>
 
 	  	   <div id="contact" class="contact">
 	  <div class="container">
-		  <div class="row">
+		  
+		  <?php if($msg != ''): ?>
+			 <br> 
+			  
 			  <h2 class="input-group input-group-lg wow fadeInUp" data-wow-delay="0.2s" >Contact</h2>
-			  <br>
+		  
+		  <div class=" container alert <?php echo $msgClass; ?>"><?php echo $msg; ?></div>
+			<?php endif; ?>
+		  <div class="row">
+			  
 			  <p class="input-group input-group-lg wow fadeInUp" data-wow-delay="0.4s">L’IGLF offre un service de garde pour accueillir les enfants des écoles francophones de Gabrielle-Roy 
               et Ste-Jeanne-d’Arc après leur journée d’école.</p>
+			  
+			 
+			  
+			  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 			  
 			    <div class="col-lg-6 col-md-6">
                 <div class="input-group input-group-lg wow fadeInUp" data-wow-delay="0.6s">
                     <span class="input-group-addon" id="sizing-addon1"><i class="fa fa-user" aria-hidden="true"></i></span>
-                    <input type="text" class="form-control" aria-describedby="sizing-addon1" placeholder="Nom Complet">
+                    <input type="text" name ="name" class="form-control" aria-describedby="sizing-addon1" placeholder="Nom Complet" value="<?php echo isset($_POST['name']) ? $name : '';?>">
                 </div>
                 <div class="input-group input-group-lg wow fadeInUp" data-wow-delay="0.8s">
                     <span class="input-group-addon" id="sizing-addon1"><i class="fa fa-envelope" aria-hidden="true"></i></span>
-                    <input type="text" class="form-control" aria-describedby="sizing-addon1" placeholder="Email">
+                    <input type="text" name="email" class="form-control" aria-describedby="sizing-addon1" placeholder="Email" value="<?php echo isset($_POST['email']) ? $email : '';?>">
                 </div>
                 <div class="input-group input-group-lg wow fadeInUp" data-wow-delay="1s">
                     <span class="input-group-addon" id="sizing-addon1"><i class="fa fa-phone" aria-hidden="true"></i></span>
-                    <input type="text" class="form-control" aria-describedby="sizing-addon1" placeholder="Téléphone">
+                    <input type="text" name="telephone" class="form-control" aria-describedby="sizing-addon1" placeholder="Téléphone" value="<?php echo isset($_POST['telephone']) ? $telephone : '';?>">
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
                 <div class="input-group wow fadeInUp" data-wow-delay="1.2s">
-                    <textarea name="" id="" cols="80" rows="6" class="form-control"></textarea>
+                    <textarea name="message" id="" cols="80" rows="6" class="form-control" ><?php echo isset($_POST['message']) ? $message : '';?></textarea>
 					
                 </div>
-				<a class="nav-link" href="EnConstruction.php"><button class="btn btn-lg wow fadeInUp" data-wow-delay="1.6s">Evoyer Votre Message</button></a>
+				<a class="nav-link" href="EnConstruction.php"><button type="submit" class="btn btn-lg wow fadeInUp" name="submit" data-wow-delay="1.6s">Evoyer Votre Message</button></a>
             </div>
-
+          </form>
 			  
 		  </div>
 		  </div>
