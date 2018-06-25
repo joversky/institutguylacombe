@@ -1,3 +1,13 @@
 {
-
+    "name": "project/project",
+    "description": "project",
+    "type": "mine",
+    "license": "GLP",
+    "minimum-stability": "stable",
+    "require": {
+        "alrik11es/cowsayphp": "^1.2"
+    },
+	"require-dev":{
+	"heroku/heroku-buildpack-php":"*"
+}
 }
