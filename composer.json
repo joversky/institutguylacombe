@@ -4,7 +4,9 @@
     "type": "mine",
     "license": "GLP",
     "minimum-stability": "stable",
-    "require": {},
+    "require": {
+        "alrik11es/cowsayphp": "^1.2"
+    },
 	"require-dev":{
 	"heroku/heroku-buildpack-php":"*"
 }
